@@ -1,0 +1,56 @@
+name: submissao
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Execução aprovada que gerou o build
+        required: true
+      artifact_name:
+        description: Nome completo do artefato build-SHA-attempt
+        required: true
+      pitch_url:
+        description: URL HTTPS do pitch real, até 90 segundos
+        required: true
+permissions:
+  contents: read
+jobs:
+  triagem:
+    if: vars.ENABLE_SUBMISSION == 'true'
+    environment: producao
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ inputs.artifact_name }}
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: downloaded
+      - name: Materiais reais e ferramentas de triagem
+        env:
+          PITCH_URL: ${{ inputs.pitch_url }}
+        run: |
+          [[ "$PITCH_URL" == https://* ]]
+          curl --fail --location --max-time 120 --max-filesize 26214400 "$PITCH_URL" -o pitch.mp4
+          cp -r downloaded/artifacts artifacts
+          sudo apt-get update && sudo apt-get install -y poppler-utils ffmpeg unzip
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Pacote e triagem
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}/
+          PRAZO: ${{ vars.SUBMISSION_DEADLINE }}
+        run: |
+          python scripts/submission.py
+          bash scripts/triagem.sh submissao
+      - uses: actions/upload-artifact@v7
+        with:
+          name: submissao-${{ github.run_id }}
+          path: submissao/

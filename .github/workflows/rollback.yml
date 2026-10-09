@@ -1,0 +1,45 @@
+name: rollback
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: spell-pages
+  cancel-in-progress: false
+jobs:
+  rollback:
+    if: vars.ENABLE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment: producao
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - run: bash scripts/publicar.sh rollback
+      - run: printf '{"repository":"%s"}\n' "$GITHUB_REPOSITORY" > .publish/status/config.json
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .publish
+      - uses: actions/deploy-pages@v5
+      - name: Confirmar versão e gameplay recuperados
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}/
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          SHA=$(node -p "JSON.parse(require('fs').readFileSync('.publish/rollout.json')).estavel")
+          node scripts/wait-version.mjs "${SITE_URL}releases/$SHA/" "$SHA"
+          node scripts/wait-rollout.mjs "$SITE_URL" "$SHA"
+          BASE_URL="$SITE_URL" EXPECTED_SHA="$SHA" npx playwright test tests/e2e/smoke.spec.js
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rollback-${{ github.run_id }}
+          path: reports/

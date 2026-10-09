@@ -1,0 +1,9 @@
+Spell & Solve - decisão de licença pendente dos titulares do projeto.
+
+Não foi concedida uma licença aberta para o código e a arte próprios nesta
+implementação. Os direitos permanecem com seus respectivos titulares.
+O responsável pelo projeto deve substituir este aviso pela licença escolhida
+antes de declarar o integrável de licenças concluído.
+
+As dependências de terceiros conservam suas próprias licenças, identificadas
+em THIRD_PARTY.md, package-lock.json e nos avisos distribuídos pelos pacotes.

@@ -1,0 +1,253 @@
+name: esteira-jogo
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: esteira-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run content:validate
+      - run: npm run test:ci
+      - name: Auditoria e SBOM
+        run: |
+          mkdir -p reports
+          npm audit --omit=dev --audit-level=critical --json > reports/audit.json
+          npm sbom --sbom-format cyclonedx > reports/sbom.json
+          node scripts/licenses.mjs
+      - name: Segredos no histórico
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Dependências PDF
+        run: |
+          python -m pip install -r requirements-dev.txt
+          sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Build, PDF e pacote único
+        run: |
+          export SOURCE_DATE_EPOCH=$(git show -s --format=%ct HEAD)
+          npm run build
+          npm run gdd:pdf
+          pdfinfo artifacts/GDD.pdf
+          npm run package
+          (cd artifacts && sha256sum -c build.zip.sha256)
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: build-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            artifacts/
+            reports/
+            playwright-report/
+            results.sarif
+          if-no-files-found: error
+  deploy-hml:
+    needs: ci
+    if: github.event_name != 'pull_request' && vars.ENABLE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: spell-pages
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: homologacao
+      url: ${{ vars.SITE_URL }}/hml/
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - uses: actions/download-artifact@v8
+        with:
+          name: build-${{ github.sha }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Verificar e preparar o mesmo ZIP
+        run: |
+          (cd downloaded/artifacts && sha256sum -c build.zip.sha256)
+          unzip -q downloaded/artifacts/build.zip -d dist
+          bash scripts/publicar.sh hml dist
+          printf '{"repository":"%s"}\n' "$GITHUB_REPOSITORY" > .publish/status/config.json
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .publish
+          name: pages-hml
+      - uses: actions/deploy-pages@v5
+        with:
+          artifact_name: pages-hml
+      - name: Propagação e regressão na homologação
+        env:
+          BASE_URL: ${{ vars.SITE_URL }}/hml/
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          node scripts/wait-version.mjs "$BASE_URL" "$GITHUB_SHA"
+          npm run test:e2e
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e2e-hml-${{ github.run_id }}
+          path: |
+            reports/
+            playwright-report/
+  deploy-prd:
+    needs: deploy-hml
+    if: vars.ENABLE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: spell-pages
+      cancel-in-progress: false
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: producao
+      url: ${{ vars.SITE_URL }}/
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+          cache: npm
+      - uses: actions/download-artifact@v8
+        with:
+          name: build-${{ github.sha }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Publicar versão isolada (verde)
+        env:
+          BUILD_ARCHIVE: downloaded/artifacts/build.zip
+        run: |
+          (cd downloaded/artifacts && sha256sum -c build.zip.sha256)
+          unzip -q downloaded/artifacts/build.zip -d dist
+          bash scripts/publicar.sh release dist
+          printf '{"repository":"%s"}\n' "$GITHUB_REPOSITORY" > .publish/status/config.json
+          npm ci
+          npx playwright install --with-deps chromium
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .publish
+          name: pages-green
+      - uses: actions/deploy-pages@v5
+        with:
+          artifact_name: pages-green
+      - name: Testar antes de virar o ponteiro
+        env:
+          BASE_URL: ${{ vars.SITE_URL }}/releases/${{ github.sha }}/
+        run: |
+          node scripts/wait-version.mjs "$BASE_URL" "$GITHUB_SHA"
+          mkdir -p reports
+          curl --fail --location "${BASE_URL%releases/*}packages/$GITHUB_SHA/build.zip" -o reports/deployed-build.zip
+          cmp downloaded/artifacts/build.zip reports/deployed-build.zip
+          npx playwright test tests/e2e/smoke.spec.js
+      - name: Promoção azul-verde
+        id: promote
+        run: |
+          bash scripts/publicar.sh promote dist "$GITHUB_SHA"
+          mkdir -p reports
+          printf '%s\n' "$GITHUB_SHA" > reports/promoted.txt
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: .publish
+          name: pages-production
+      - uses: actions/deploy-pages@v5
+        id: publish-production
+        continue-on-error: true
+        with:
+          artifact_name: pages-production
+      - name: Smoke público
+        id: smoke
+        continue-on-error: true
+        env:
+          BASE_URL: ${{ vars.SITE_URL }}/
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          node scripts/wait-rollout.mjs "$BASE_URL" "$GITHUB_SHA"
+          npx playwright test tests/e2e/smoke.spec.js
+      - name: Restaurar ponteiro anterior
+        if: steps.smoke.outcome == 'failure' || steps.publish-production.outcome == 'failure'
+        run: |
+          bash scripts/publicar.sh rollback
+          mkdir -p reports
+          printf '%s\n' "$GITHUB_RUN_ID" > reports/rollback.txt
+      - uses: actions/upload-artifact@v7
+        if: steps.smoke.outcome == 'failure' || steps.publish-production.outcome == 'failure'
+        with:
+          name: rollback-executed
+          path: reports/rollback.txt
+      - uses: actions/upload-pages-artifact@v5
+        if: steps.smoke.outcome == 'failure' || steps.publish-production.outcome == 'failure'
+        with:
+          path: .publish
+          name: pages-rollback
+      - uses: actions/deploy-pages@v5
+        if: steps.smoke.outcome == 'failure' || steps.publish-production.outcome == 'failure'
+        with:
+          artifact_name: pages-rollback
+      - name: Verificar restauração e registrar falha
+        if: steps.smoke.outcome == 'failure' || steps.publish-production.outcome == 'failure'
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}/
+        run: |
+          OLD=$(node -p "JSON.parse(require('fs').readFileSync('.publish/rollout.json')).estavel")
+          node scripts/wait-version.mjs "${SITE_URL}releases/$OLD/" "$OLD"
+          node scripts/wait-rollout.mjs "$SITE_URL" "$OLD"
+          BASE_URL="$SITE_URL" EXPECTED_SHA="$OLD" npx playwright test tests/e2e/smoke.spec.js
+          exit 1
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.promote.outcome == 'success'
+        with:
+          name: production-promoted
+          path: reports/promoted.txt
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: e2e-prd-${{ github.run_id }}
+          path: reports/
+  release:
+    needs: deploy-prd
+    if: startsWith(github.ref, 'refs/tags/v') && vars.ENABLE_RELEASE == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    environment: producao
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: build-${{ github.sha }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Release SemVer com artefatos aprovados
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          (cd downloaded/artifacts && sha256sum -c build.zip.sha256)
+          gh release create "$RELEASE_TAG" downloaded/artifacts/build.zip downloaded/artifacts/build.zip.sha256 downloaded/artifacts/GDD.pdf downloaded/reports/sbom.json --verify-tag --notes-file docs/release-notes.md
+
+

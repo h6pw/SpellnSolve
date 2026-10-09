@@ -1,0 +1,19 @@
+{
+  "facil": {
+    "label": "Fácil", "speed": 46, "spawnInterval": 4.6,
+    "maxOperand": 20, "operations": ["+", "-"],
+    "description": "Soma e subtração · números até 20"
+  },
+  "medio": {
+    "label": "Médio", "speed": 62, "spawnInterval": 3.8,
+    "maxOperand": 50, "operations": ["+", "-", "*"],
+    "multiplication": { "minA": 1, "maxA": 20, "minB": 1, "maxB": 9 },
+    "description": "Soma e subtração até 50 · multiplicação até 20 × 9"
+  },
+  "dificil": {
+    "label": "Difícil", "speed": 78, "spawnInterval": 3,
+    "maxOperand": 99, "operations": ["+", "-", "*", "/"],
+    "multiplication": { "minA": 10, "maxA": 99, "minB": 2, "maxB": 9 },
+    "description": "Contas até 99 · multiplicação de 2 por 1 dígito · divisão inteira"
+  }
+}

@@ -1,13 +1,14 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>spellnsolve</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
-</html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="Defenda o bosque mágico com cálculo mental." /><title>Spell & Solve · O bosque dos números</title></head>
+<body><main>
+<header><div><span class="eyebrow">UMA AVENTURA DE CÁLCULO MENTAL</span><h1>Spell <span>&</span> Solve</h1><p>Pequenas contas. Grandes feitiços.</p></div><div class="record">✦ Recorde <strong id="record">0</strong></div></header>
+<section class="arena" aria-label="Bosque mágico">
+<div class="hud"><span>Pontos <strong id="score">0</strong></span><span>Vidas <strong id="lives">3</strong> / 3 ♥</span><span>Onda <strong id="level">1</strong></span></div>
+<canvas id="gameCanvas" width="960" height="540" aria-label="Gato mago defendendo o bosque dos inimigos"></canvas>
+<section class="overlay" id="menu" aria-labelledby="menu-title"><span class="eyebrow">O BOSQUE DOS NÚMEROS</span><h2 id="menu-title">A magia está na<br />sua resposta.</h2><p>Ajude o gato mago a defender seu lar.<br />Resolva as contas antes que as criaturas cheguem!</p><label for="difficulty">Seu desafio</label><select id="difficulty"><option value="facil">Fácil</option><option value="medio">Médio</option><option value="dificil">Difícil</option></select><small id="difficulty-help">Soma e subtração · números até 20</small><button id="play" type="button">Jogar agora ✦</button></section>
+<section class="overlay" id="gameover" hidden aria-labelledby="over-title"><span class="eyebrow">ATÉ A PRÓXIMA AVENTURA</span><h2 id="over-title">Game Over</h2><p>Você conquistou <strong id="final-score">0</strong> pontos.</p><button id="restart" type="button">Jogar novamente</button><button id="back" class="secondary" type="button">Voltar ao menu</button></section>
+</section>
+<section class="controls" aria-label="Lançar feitiços"><p id="challenges" aria-label="Expressões dos inimigos">O bosque está tranquilo…</p><form id="answer-form"><label for="answer">Sua resposta</label><input id="answer" inputmode="numeric" autocomplete="off" placeholder="Digite o resultado" maxlength="12" disabled /><button id="cast" disabled>Lançar <kbd>Enter</kbd></button></form><p id="feedback" role="status" aria-live="polite"></p></section>
+<footer><span>Resolva uma conta → digite o resultado → pressione Enter.<br />5 acertos avançam uma onda. Você tem três vidas.</span><div id="audio-controls" class="audio-controls" role="group" aria-label="Controles de áudio"><div><button id="music-toggle" type="button" aria-label="Música ambiente" aria-pressed="true">♫ Música</button><button id="effects-toggle" type="button" aria-label="Efeitos sonoros" aria-pressed="true">✦ Efeitos</button></div><label for="audio-volume">Volume <input id="audio-volume" type="range" min="0" max="100" value="60" /></label></div><span id="version">Versão de desenvolvimento</span></footer>
+</main><script type="module" src="/src/main.js"></script></body></html>

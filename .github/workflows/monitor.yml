@@ -1,0 +1,65 @@
+name: monitor
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: spell-observabilidade
+  cancel-in-progress: false
+jobs:
+  sondas:
+    if: vars.ENABLE_MONITOR == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      issues: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.13.1
+      - name: Recuperar histórico de observabilidade
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git fetch origin observabilidade; then
+            git worktree add --detach .observe FETCH_HEAD
+            cp -r .observe/status ./status
+          else
+            git worktree add --detach .observe HEAD
+            git -C .observe switch --orphan observabilidade
+          fi
+      - name: Sondas e alertas reais
+        id: probe
+        continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITE_URL: ${{ vars.SITE_URL }}/
+        run: node scripts/monitor.mjs
+      - name: Métricas DORA reais
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/dora.mjs
+      - name: Guardar dados sem republicar Pages
+        if: always()
+        run: |
+          test -d status
+          cp -r status .observe/
+          git -C .observe add status
+          if ! git -C .observe diff --cached --quiet; then
+            git -C .observe commit -m "monitor: sondas e DORA run $GITHUB_RUN_ID"
+            git -C .observe push origin HEAD:observabilidade
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: observabilidade-${{ github.run_id }}
+          path: status/
+      - if: steps.probe.outcome == 'failure'
+        run: exit 1
