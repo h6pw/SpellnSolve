@@ -50,3 +50,7 @@ Dificuldade: Fácil +/− até 20; Médio +/− até 50 e × até 20 × 9; Difí
 Áudio: melodia original de fantasia com sinos/acordes e cinco efeitos sintetizados, sem arquivos externos ou novas dependências. Web Audio inicia em interação, suspende na aba oculta e permite música/efeitos separados e volume persistente. Testes de ciclo de áudio e E2E verificaram contexto running e sinal não nulo no analisador real do Chromium. A preferência subjetiva pela composição depende de ouvir a partida; não houve teste em navegadores móveis reais.
 PDF atualizado reaberto e páginas renderizadas. README, GDD, THIRD_PARTY e AI-USAGE atualizados. Nenhum push, deploy ou release foi realizado.
 Verificação final desta revisão: o ZIP atualizado foi descompactado e passou no smoke e no cenário de áudio no servidor Node incluso. Dois builds finais com SOURCE_DATE_EPOCH fixo produziram dist e ZIP idênticos. Lint passou; o relatório completo mantém cinco E2E aprovados.
+
+## Atualização documental — licença e logo
+
+Em 09/10/2026, após os registros históricos acima, o responsável definiu h6pw como identificação na licença MIT e informou a geração da logo no ChatGPT. LICENSE e metadados npm atualizados; logo original copiada ao README, sem alteração no jogo. A pendência de escolha da licença própria foi resolvida. Isso não substitui revisão humana nem validações remotas de INT-05.

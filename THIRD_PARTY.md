@@ -4,12 +4,12 @@
 
 | Recurso | Autor/origem | Licença e direitos | Uso |
 |---|---|---|---|
-| Gato, criaturas, cenário, partículas | Código original em src/game/render.js, assistido por Codex em 09/10/2026 | Decisão da licença própria pendente do titular (LICENSE) | Canvas, sem arquivos externos |
-| Interface, textos, CSS | Projeto original e implementação assistida por Codex | Decisão da licença própria pendente | Interface |
-| Música ambiente e efeitos | Composição e síntese originais em src/game/audio.js, assistidas por Codex | Decisão da licença própria pendente, sem samples externos | Web Audio em tempo real |
+| Gato, criaturas, cenário, partículas | Código original em src/game/render.js, assistido por Codex em 09/10/2026 | MIT (LICENSE) | Canvas, sem arquivos externos |
+| Interface, textos, CSS | Projeto original e implementação assistida por Codex | MIT (LICENSE) | Interface |
+| Música ambiente e efeitos | Composição e síntese originais em src/game/audio.js, assistidas por Codex | MIT (LICENSE), sem samples externos | Web Audio em tempo real |
 | Fontes | Fontes já instaladas no sistema operacional | Não redistribuídas | system-ui e Georgia |
 
-Não há áudio gravado, samples, imagens externas, CDN de fontes ou recursos de terceiros carregados pelo jogo. A música e os efeitos são sintetizados por código original, sem cópia de melodias ou gravações de terceiros. A decisão da licença própria é um bloqueio documental: não declarar INT-05 concluído enquanto LICENSE não for definido.
+Não há áudio gravado, samples, imagens externas, CDN de fontes ou recursos de terceiros carregados pelo jogo. A música e os efeitos são sintetizados por código original, sem cópia de melodias ou gravações de terceiros. O código e os recursos próprios estão sob MIT, conforme decisão do responsável em 09/10/2026. Isso não comprova, por si só, todos os requisitos de INT-05.
 
 ## Ferramentas diretas de desenvolvimento
 
@@ -34,3 +34,9 @@ src/assets/hero.png, javascript.svg, vite.svg e public/icons.svg/favicon.svg vie
 
 docs/Avaliação.html é material da Faculdade SENAI fornecido pelo aluno; contém logos, fontes e referências externas que não foram licenciados para o jogo. Preservado como requisito, excluído da build. Não o tratar como arte própria.
 `Actionlint 1.7.12` (rhysd, MIT, https://github.com/rhysd/actionlint) e `Gitleaks CLI 8.30.1` (Gitleaks, MIT, https://github.com/gitleaks/gitleaks) foram baixados dos releases oficiais com checksums conferidos para validar localmente. Ficam em tmp/tools, fora da build.
+
+## Logo do repositório
+
+`docs/assets/logo.png`: imagem fornecida por h6pw (Matheus Czubka), gerada no ChatGPT segundo declaração do responsável em 09/10/2026. Modelo, prompt e data de geração não informados; não atribuir uma engine específica. Usada no README, sem inclusão na build do jogo.
+
+Os [termos de uso da OpenAI](https://openai.com/policies/row-terms-of-use/) consultados em 09/10/2026 atribuem ao usuário os direitos sobre a saída, na medida permitida pela lei; saídas podem não ser únicas. O responsável autorizou seu uso no projeto. A logo acompanha a licença MIT do projeto quanto aos direitos do titular; isso não concede direitos de terceiros.

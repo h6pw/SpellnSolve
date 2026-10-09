@@ -21,4 +21,4 @@ Sem deploys executados, não há métricas reais do período nem comparação me
 Não atribuir commits da IA ou histórico a quatro pessoas sem evidência. Preencher SQUAD.md e links de PRs reais; pelo menos três integráveis por membro e dez PRs revisados no total. Roteiro de vídeo em docs/pitch.md. Gravação, legendas e relatório PDF final dependem do squad e da URL de produção.
 
 ## Pendências
-Revisão humana, licença própria, membros, configurações GitHub, CI remoto, homologação/produção, SemVer e release, rollback abaixo de cinco minutos, dois alertas reais, DORA, pitch, PDF final e triagem completa. Não foram simulados resultados dessas atividades.
+Revisão humana, membros, configurações GitHub, CI remoto, homologação/produção, SemVer e release, rollback abaixo de cinco minutos, dois alertas reais, DORA, pitch, PDF final e triagem completa. Não foram simulados resultados dessas atividades.
