@@ -31,7 +31,7 @@ test-results/
 submissao/
 .publish/
 .observe/
-status/
+/status/
 tmp/
 __pycache__/
 pitch.mp4

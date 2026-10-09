@@ -54,3 +54,9 @@ Verificação final desta revisão: o ZIP atualizado foi descompactado e passou 
 ## Atualização documental — licença e logo
 
 Em 09/10/2026, após os registros históricos acima, o responsável definiu h6pw como identificação na licença MIT e informou a geração da logo no ChatGPT. LICENSE e metadados npm atualizados; logo original copiada ao README, sem alteração no jogo. A pendência de escolha da licença própria foi resolvida. Isso não substitui revisão humana nem validações remotas de INT-05.
+
+## Ativação do Pages — 09/10/2026
+
+Push documental 31af1ef realizado com autorização do responsável. Pages configurado para GitHub Actions; SITE_URL e ENABLE_DEPLOY definidos. Ambientes homologacao e producao criados sem regras de aprovação: falta indicar um revisor da equipe para cumprir o gate humano da avaliação. Releases e monitoramento não ativados.
+
+A CI remota 37980745977 revelou falha no teste de publicação: a regra status/ do .gitignore excluía pages/status/. Corrigida para /status/, incluindo os dois arquivos fonte do painel no versionamento. Resultado da nova execução será verificado antes de declarar publicação concluída.
