@@ -1,0 +1,3 @@
+Spell & Solve
+Offline: com Node.js instalado, execute node serve.mjs nesta pasta e abra http://127.0.0.1:4173.
+Não exige rede nem npm. Os módulos ES exigem servidor HTTP; abrir index.html por file:// não é suportado.
