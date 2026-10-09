@@ -60,3 +60,5 @@ Em 09/10/2026, após os registros históricos acima, o responsável definiu h6pw
 Push documental 31af1ef realizado com autorização do responsável. Pages configurado para GitHub Actions; SITE_URL e ENABLE_DEPLOY definidos. Ambientes homologacao e producao criados sem regras de aprovação: falta indicar um revisor da equipe para cumprir o gate humano da avaliação. Releases e monitoramento não ativados.
 
 A CI remota 37980745977 revelou falha no teste de publicação: a regra status/ do .gitignore excluía pages/status/. Corrigida para /status/, incluindo os dois arquivos fonte do painel no versionamento. Resultado da nova execução será verificado antes de declarar publicação concluída.
+
+A execução remota 37981291927 passou no job ci para af28fe3: instalação, lint, conteúdo, 53 testes, auditoria/SBOM, Gitleaks, PDF, build/ZIP e E2E. Publicação ainda em andamento nesse registro. Ajuste adicional em version.mjs inclui LICENSE e THIRD_PARTY.md na distribuição MIT.
