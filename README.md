@@ -30,18 +30,9 @@ O recorde fica salvo no navegador. Música ambiente, efeitos e volume têm contr
 
 ## 🌐 Jogar online
 
-O jogo é compatível com **GitHub Pages**. A publicação está preparada, mas configurar o workflow não comprova que o site já esteja no ar.
+O jogo pode ser jogado online pelo **GitHub Pages**, diretamente no navegador, sem instalação:
 
-Endereço previsto após a ativação: `https://h6pw.github.io/SpellnSolve/`.
-
-Para ativar a publicação, o responsável deve:
-
-1. Em **Settings → Pages → Build and deployment**, selecionar **GitHub Actions**.
-2. Criar os environments `homologacao` e `producao`, com revisão humana em produção quando disponível no plano.
-3. Em **Settings → Secrets and variables → Actions → Variables**, definir `SITE_URL=https://h6pw.github.io/SpellnSolve` e `ENABLE_DEPLOY=true`.
-4. Executar a esteira e acompanhar os testes da homologação e a aprovação de produção.
-
-A homologação usa `/hml/`. Produção reutiliza o mesmo pacote, verifica a versão e permite rollback depois de existir uma versão anterior. Releases e monitoramento têm ativações independentes. [Consulte o guia completo](docs/desenvolvimento.md#cicd-e-autorização).
+**[🎮 Jogar Spell & Solve](https://h6pw.github.io/SpellnSolve/)**
 
 ## 💻 Executar no computador
 
