@@ -1,0 +1,10 @@
+<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spell & Solve</title><body style="background:#15283e;color:#fff;font:20px system-ui;padding:3rem"><p id="message">Abrindo o bosque mágico…</p><script>
+fetch('rollout.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error();return r.json();}).then(r=>{
+  const valid=[r.estavel,r.canario].filter(x=>/^[a-f0-9]{40}$/.test(x));
+  let selected;try{selected=sessionStorage.getItem('spell-release');}catch{}
+  if(!valid.includes(selected)){selected=r.canario&&Math.random()*100<r.percentual?r.canario:r.estavel;}
+  if(!valid.includes(selected))throw Error();
+  try{sessionStorage.setItem('spell-release',selected);}catch{}
+  location.replace('releases/'+selected+'/');
+}).catch(()=>{document.getElementById('message').textContent='O bosque está indisponível. Tente novamente em instantes.';});
+</script></body></html>
