@@ -1,7 +1,7 @@
 # Spell & Solve - Game Design Document
 
 Versão: {{VERSION}} | Data de geração: {{DATE}}
-Estado: refinamento local do bosque encantado em 16/10/2026; esta revisão não foi publicada. Validação humana pendente.
+Estado: refinamento do bosque encantado em 16/10/2026, integrado à main para publicação pela esteira. Validação humana pendente.
 
 ## Premissa
 Um gato mago defende o Bosque dos Números de criaturas que se aproximam. O jogador resolve expressões para transformar cálculo mental em feitiços. O jogo oferece prática acessível, gratuita e sem cadastro no navegador. A conexão com educação em tecnologia está no raciocínio lógico e na compreensão de operadores aritméticos usados em programação; não pretende ensinar uma linguagem de programação.

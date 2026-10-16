@@ -28,7 +28,7 @@ Cada acerto vale **10 pontos × onda**. A cada cinco acertos, as criaturas ficam
 
 O recorde fica salvo no navegador. Música ambiente, efeitos e volume têm controles próprios. A partida e o áudio pausam quando a aba fica oculta. Sem cadastro, banco de dados ou ranking online.
 
-## ✦ Bosque encantado — refinamento local
+## ✦ Bosque encantado
 
 A apresentação agora acompanha uma clareira de luar com moldura, grimórios de dificuldade e barra de conjuração. Três variantes de criaturas mantêm sua identidade ao longo da partida. Feitiços têm lançamento, impacto, dissolução e valor ganho; o gato reage ao conjurar, sofrer dano e encerrar a partida.
 
@@ -38,7 +38,7 @@ A apresentação agora acompanha uma clareira de luar com moldura, grimórios de
 
 As contas usam etiquetas DOM de pelo menos 16 px, com identificadores e linhas até as criaturas. A lista textual acompanha a ordem de aproximação e indica urgência. Movimento reduzido também vale para o Canvas. Não houve teste em celular físico nem validação completa com tecnologia assistiva.
 
-Este refinamento está na branch local `codex/enchanted-forest`; o endereço público abaixo pertence à última versão publicada, não a estas alterações. [Evidências e reversão](docs/refinamento.md).
+O refinamento foi integrado à `main`. O endereço público abaixo acompanha a última publicação bem-sucedida da esteira; o commit servido pode ser conferido no rodapé do jogo. [Evidências e reversão](docs/refinamento.md).
 
 ## 🌐 Jogar online
 

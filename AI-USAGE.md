@@ -17,3 +17,7 @@ O agente executou testes locais e corrigiu falhas encontradas, conforme docs/evi
 ## Refinamento local — 16/10/2026
 
 Codex assistiu direção artística procedural, interface, identidade estável, feedback, combos, pausa, etiquetas responsivas, testes e documentação. Branch inicial main, árvore limpa, base 3f14632added95493b3a69adc4ae883896680487. Trabalho isolado em codex/enchanted-forest. Não foram usados agentes auxiliares, geração de imagens, bibliotecas novas ou recursos externos. Não houve push, deploy, release ou alteração de configuração externa nesta rodada. Capturas e testes não substituem revisão humana, estudo pedagógico ou teste com leitores de tela.
+
+## Autorização de publicação do refinamento — 16/10/2026
+
+Após a entrega local, o responsável solicitou integrar esta versão à main no GitHub e atualizar o jogo online. A main remota foi consultada e não tinha divergências; c14ae66 foi integrado por fast-forward. O push e a publicação pela esteira foram autorizados nesta solicitação posterior; isso não altera o registro de que a rodada de implementação anterior permaneceu local. Não simular revisão humana da avaliação.
