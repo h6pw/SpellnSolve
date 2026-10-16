@@ -40,3 +40,7 @@ docs/Avaliação.html é material da Faculdade SENAI fornecido pelo aluno; cont�
 `docs/assets/logo.png`: imagem fornecida por h6pw (Matheus Czubka), gerada no ChatGPT segundo declaração do responsável em 09/10/2026. Modelo, prompt e data de geração não informados; não atribuir uma engine específica. Usada no README, sem inclusão na build do jogo.
 
 Os [termos de uso da OpenAI](https://openai.com/policies/row-terms-of-use/) consultados em 09/10/2026 atribuem ao usuário os direitos sobre a saída, na medida permitida pela lei; saídas podem não ser únicas. O responsável autorizou seu uso no projeto. A logo acompanha a licença MIT do projeto quanto aos direitos do titular; isso não concede direitos de terceiros.
+
+## Refinamento local de 16/10/2026
+
+Árvores em camadas, arco de pedra, estados do gato, três variantes cosméticas, anéis/partículas e acabamento CSS foram desenhados por código original com assistência de Codex, sob MIT. Sem imagens novas, downloads, fontes, samples ou dependências. A logo permanece apenas na documentação; todos os recursos desta revisão estão em módulos importados e entram na build mesmo com publicDir:false.
