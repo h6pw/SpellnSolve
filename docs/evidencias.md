@@ -62,3 +62,21 @@ Push documental 31af1ef realizado com autorização do responsável. Pages confi
 A CI remota 37980745977 revelou falha no teste de publicação: a regra status/ do .gitignore excluía pages/status/. Corrigida para /status/, incluindo os dois arquivos fonte do painel no versionamento. Resultado da nova execução será verificado antes de declarar publicação concluída.
 
 A execução remota 37981291927 passou no job ci para af28fe3: instalação, lint, conteúdo, 53 testes, auditoria/SBOM, Gitleaks, PDF, build/ZIP e E2E. Publicação ainda em andamento nesse registro. Ajuste adicional em version.mjs inclui LICENSE e THIRD_PARTY.md na distribuição MIT.
+
+## Refinamento integrado do bosque — 16/10/2026 (local)
+
+Base: main limpa em 3f14632added95493b3a69adc4ae883896680487; branch codex/enchanted-forest. Não houve push, deploy, release ou alteração de configuração externa. Workflows, configurações Vite/Vitest/Playwright, dependências, dificuldades e armazenamento de recordes têm diff vazio contra a base.
+
+- npm run lint e npm run content:validate: aprovados.
+- npm run test:ci: 66 testes aprovados (55 unitários, 11 de integração), preservando os 53 anteriores e seus asserts. Cobertura de src/core: linhas 98,79%, statements 99,13%, branches 98,80%, funções 100%; thresholds preservados.
+- npm run build: aprovado, base relativa e publicDir:false preservados. Nenhum novo bitmap ou recurso externo incluído.
+- npm run test:e2e: 13 aprovados em 1,4 min na repetição final isolada, preservando os cinco originais. Novos cenários de erro/seleção/foco, pausa e visibilitychange simulado, 320/390/768 px, 844 × 390 horizontal, resize com relógio parado e viewport equivalente a zoom 200% com movimento reduzido.
+- ZIP extraído servido pelo Node incluso em 127.0.0.1:4176: smoke e correção de entrada aprovados (2 testes, saída independente). Integridade zipfile.testzip, avisos LICENSE/THIRD_PARTY e comparação do SHA-256 aprovadas. Tamanho na verificação anterior ao commit local: 19.269 bytes, muito abaixo de 25 MB. O pacote final é regenerado após o commit para refletir o SHA local; consultar artifacts/build.zip.sha256.
+- npm run gdd:pdf: PDF reaberto, texto extraído e três páginas renderizadas por PDFium e inspecionadas, sem cortes. Python do runtime foi adicionado temporariamente ao PATH do comando, sem alterar ambiente permanente. Poppler local não foi usado.
+- SBOM CycloneDX e inventário de 152 dependências com licença declarada gerados localmente. Auditoria online/Gitleaks/CI remota não foram reexecutados nesta rodada.
+- Capturas novas inspecionadas: menu, menu mobile, jogo, combo, pausa, Game Over, impacto em 100/300/650 ms, mobile 320/390/768 e horizontal. Vídeo spell-real-time.webm (4,28 s) grava início de partida e feitiço com relógio real; frames de 1,2/1,5/1,8 s revisados em sequência no navegador para conferir lançamento, impacto e dissolução. Amostragem de imagens em execução confirma mudança entre frames.
+- Medição final de 152 callbacks reais do ciclo visual: mediana 0,9 ms, P95 1,5 ms neste computador (reports/refinement/performance.json). Mede trabalho JavaScript do callback, não latência total de pintura nem desempenho de aparelhos móveis. Não foi introduzido cache ou otimização complexa.
+
+Falhas encontradas e corrigidas: nome acessível do input incluía o cristal; resize durante relógio parado deixava etiquetas nas coordenadas antigas; seleção de faixa de etiqueta podia afastá-la excessivamente da criatura. Uma execução repetida teve conflito de traces porque dois processos Playwright compartilharam outputDir; foi descartada como evidência de aprovação e repetida isoladamente, sem remover asserts. O teste inicial de zoom aplicava ampliação duas vezes; passou a verificar o viewport CSS equivalente, com limitação explícita.
+
+Sem celular físico, teclado virtual real, Safari/Firefox, avaliação com leitor de tela ou estudo pedagógico. Não afirmar acessibilidade completa. Arte e trilha continuam sujeitas à avaliação humana. O vídeo não é aprovação humana. Comparação e reversão: docs/refinamento.md.

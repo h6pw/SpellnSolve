@@ -28,6 +28,18 @@ Cada acerto vale **10 pontos × onda**. A cada cinco acertos, as criaturas ficam
 
 O recorde fica salvo no navegador. Música ambiente, efeitos e volume têm controles próprios. A partida e o áudio pausam quando a aba fica oculta. Sem cadastro, banco de dados ou ranking online.
 
+## ✦ Bosque encantado — refinamento local
+
+A apresentação agora acompanha uma clareira de luar com moldura, grimórios de dificuldade e barra de conjuração. Três variantes de criaturas mantêm sua identidade ao longo da partida. Feitiços têm lançamento, impacto, dissolução e valor ganho; o gato reage ao conjurar, sofrer dano e encerrar a partida.
+
+**Sequências:** marcos em 3, 5 e 10 acertos, sem multiplicar pontos. Entrada malformada preserva a sequência; inteiro incorreto ou perda de vida a interrompem. A melhor sequência aparece no resumo final. A pontuação continua em 10 × onda, com avanço a cada cinco acertos totais.
+
+**Pausa:** botão Pausar/Retomar ou **Esc**; a tecla P também funciona fora do campo de resposta. A pausa congela inimigos, efeitos e áudio. Ao voltar de uma aba oculta, uma pausa manual continua ativa. O campo preserva e seleciona valores errados; acertos limpam a entrada.
+
+As contas usam etiquetas DOM de pelo menos 16 px, com identificadores e linhas até as criaturas. A lista textual acompanha a ordem de aproximação e indica urgência. Movimento reduzido também vale para o Canvas. Não houve teste em celular físico nem validação completa com tecnologia assistiva.
+
+Este refinamento está na branch local `codex/enchanted-forest`; o endereço público abaixo pertence à última versão publicada, não a estas alterações. [Evidências e reversão](docs/refinamento.md).
+
 ## 🌐 Jogar online
 
 O jogo pode ser jogado online pelo **GitHub Pages**, diretamente no navegador, sem instalação:
@@ -71,7 +83,7 @@ O `build.zip.sha256` permite verificar a integridade do pacote. Os arquivos de `
 
 ## 🧪 Qualidade e entrega
 
-A suíte preserva os dez testes unitários originais e cobre regras, integração, interface e áudio. A última validação local registrada contém **53 testes de unidade/integração e 5 E2E**; consulte as [evidências](docs/evidencias.md) para contexto e limitações. Isso não substitui o resultado de uma execução remota.
+A suíte preserva os dez testes unitários originais e cobre regras, integração, interface e áudio. A última validação local registrada contém **66 testes de unidade/integração e 13 E2E**; consulte as [evidências](docs/evidencias.md) para contexto e limitações. Isso não substitui o resultado de uma execução remota.
 
 A CI está preparada para lint, JUnit, cobertura, build, PDF do GDD, auditoria de dependências, Gitleaks, SBOM e ZIP com SHA-256. Deploy, releases, monitoramento e submissão dependem de configuração e evidências reais.
 

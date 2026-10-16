@@ -13,3 +13,7 @@
 A logo do README foi gerada no ChatGPT pelo responsável, que forneceu o arquivo; modelo e prompt não informados. O agente apenas copiou o PNG, sem gerar ou editar imagens. Não foram usados ImageGen pelo agente, sprites gerados como imagem no jogo, Opal ou AI Studio. As expressões são produzidas por lógica algorítmica existente, e o JSON contém parâmetros revisados automaticamente por esquema. Não é necessário golden.jsonl de conteúdo pedagógico gerado por essas ferramentas nesta versão.
 
 O agente executou testes locais e corrigiu falhas encontradas, conforme docs/evidencias.md. Não produziu PR aprovado, deploy, release, vídeo ou contribuições fictícias. O responsável deve registrar quem revisou código, arte, mecânicas, licenças e evidências antes de aceitar a entrega.
+
+## Refinamento local — 16/10/2026
+
+Codex assistiu direção artística procedural, interface, identidade estável, feedback, combos, pausa, etiquetas responsivas, testes e documentação. Branch inicial main, árvore limpa, base 3f14632added95493b3a69adc4ae883896680487. Trabalho isolado em codex/enchanted-forest. Não foram usados agentes auxiliares, geração de imagens, bibliotecas novas ou recursos externos. Não houve push, deploy, release ou alteração de configuração externa nesta rodada. Capturas e testes não substituem revisão humana, estudo pedagógico ou teste com leitores de tela.
